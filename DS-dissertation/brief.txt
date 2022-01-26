@@ -1,0 +1,25 @@
+The Covid-19 dataset.
+
+It comprise 2237 patients admitted to the hospital of whom 93 have died.
+
+Data contain a number of comorbidities, corresponding column names are hopefully
+self-explanatory (let me know if not). 
+The coding for these variables is 1-Yes, 2=No.
+
+The dataset also has Age, ICU (the fact of admission to ICU, we should later
+discuss how to better use this), COVID (results of the PCR test), Sex and Days
+(number of days between the admission and the Outcome - discharge for whose who survived and
+death for those who have died, this is the crucial variable for the survival analysis).
+
+Variable Death present the main outcome - discharge (0) or death (1).
+
+The two directions I was thinking of are 
+
+- predictive modelling (using logistic regression, neural networks, random forest, SVM, etc.)
+where the performance will be measured with the combination of sensitivity/specificity and
+with the Area under the ROC-curve
+
+- prognostic modelling (Kaplan-Meier curves toe value the effect of each separate
+comorbidity on the outcome and Cox regression to predict outcome with time)
+
+The data is to be treated with confidentiality in mind. 
