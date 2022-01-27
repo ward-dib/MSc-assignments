@@ -2,6 +2,8 @@ import os
 import sys
 import pandas as pd
 import numpy as np
+from scipy.stats import sem
+from sklearn.metrics import roc_auc_score
 from keras.callbacks import ModelCheckpoint
 from keras.models import  Sequential
 from keras.layers import  Dense, Activation
@@ -13,23 +15,20 @@ from sklearn import preprocessing
 import matplotlib.pyplot as plt
 
 df = pd.read_excel(r'C:\Users\warda\Desktop\wrd\Uni\MSc\Project\C19.xlsx')
-df.head()
 
 df.drop(['Sex2'], axis = 1, inplace = True)
 df.drop(['ID'], axis = 1, inplace = True)
 df.drop(['ICU'], axis = 1, inplace = True)
 df.drop(['Days'], axis = 1, inplace = True)
-df.head()
 
 dataset = df.values
-dataset
 
 X = dataset[:,0:8]
 Y = dataset[:,8]
 
 min_max_scaler = preprocessing.MinMaxScaler()
-X_scale = min_max_scaler.fit_transform(X)
 
+X_scale = min_max_scaler.fit_transform(X)
 X_train, X_val_and_test, Y_train, Y_val_and_test = train_test_split(X_scale, Y, test_size=0.5)
 X_val, X_test, Y_val, Y_test = train_test_split(X_val_and_test, Y_val_and_test, test_size=0.5)
 print(X_train.shape, X_val.shape, X_test.shape, Y_train.shape, Y_val.shape, Y_test.shape)
@@ -60,11 +59,8 @@ plt.plot(fpr-1, tpr, color="#e6550d",linewidth=2.2, label='Neural Network' % roc
 
 
 plt.savefig("ANNROC.png", transparent=True, dpi=300)
-print(roc_auc)
 
-import numpy as np
-from scipy.stats import sem
-from sklearn.metrics import roc_auc_score
+
 n_bootstraps = 2000
 rng_seed = 42  # control reproducibility
 bootstrapped_scores = []
@@ -77,7 +73,8 @@ for i in range(n_bootstraps):
     score = roc_auc_score(Y_test[indices], Y_pred[indices])
     bootstrapped_scores.append(score)
     print("Bootstrap #{} ROC area: {:0.3f}".format(i + 1, score))
-import matplotlib.pyplot as plt
+
+
 plt.hist(bootstrapped_scores, bins=50)
 plt.title('Histogram of the bootstrapped ROC AUC scores')
 plt.show()
@@ -89,6 +86,7 @@ confidence_upper = sorted_scores[int(0.95 * len(sorted_scores))]
 print("Confidence interval : [{:0.3f} - {:0.3}]".format(
     confidence_lower, confidence_upper))
 Y_pred
+
 ANN = np.array(Y_pred)
 type(ANN)
 ANN = pd.DataFrame(ANN).to_csv('ANN.csv')
